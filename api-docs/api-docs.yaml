@@ -1,0 +1,1391 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: https://localhost:8443
+  description: Generated server url
+paths:
+  /api/users/profile/edited:
+    put:
+      tags:
+      - rest-user
+      summary: Edit user profile
+      operationId: editUser
+      parameters:
+      - name: username
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: surname
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: encodedPassword
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: confirmEncodedPassword
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: Changes made successfully
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User_UserDetails'
+        "403":
+          description: Only access to registered user
+  /api/plans/like:
+    put:
+      tags:
+      - rest-plan
+      operationId: likePlan
+      parameters:
+      - name: abbrev
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+  /api/plans/likeC:
+    put:
+      tags:
+      - rest-plan
+      operationId: likePlanC
+      parameters:
+      - name: planName
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Plan_PlanDetails'
+  /api/plans/edited:
+    put:
+      tags:
+      - rest-plan
+      operationId: editPlan
+      parameters:
+      - name: planName
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: newDescription
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: abv
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: difficulty
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Plan_PlanDetails'
+  /api/plans/dislike:
+    put:
+      tags:
+      - rest-plan
+      operationId: dislikePlan
+      parameters:
+      - name: abbrev
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+  /api/plans/dislikeC:
+    put:
+      tags:
+      - rest-plan
+      operationId: dislikePlanC
+      parameters:
+      - name: planName
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Plan_PlanDetails'
+  /api/categories/like:
+    put:
+      tags:
+      - rest-category
+      operationId: likeCategory
+      parameters:
+      - name: categoryName
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Category_CategoryDetails'
+  /api/categories/edit:
+    put:
+      tags:
+      - rest-category
+      summary: Edits an existing category
+      operationId: editCategory
+      parameters:
+      - name: categoryName
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: newDescription
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: color
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: Returns the created category information
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoryDetails_CategoryDetails'
+        "403":
+          description: Only access to admin account
+        "409":
+          description: There is already a category with the name given by parameter
+  /api/categories/dislike:
+    put:
+      tags:
+      - rest-category
+      operationId: dislikeCategory
+      parameters:
+      - name: categoryName
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Category_CategoryDetails'
+  /api/users/new:
+    post:
+      tags:
+      - rest-user
+      summary: Create a new user
+      operationId: createUser
+      parameters:
+      - name: email
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: username
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: surname
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: encodedPassword
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: confirmEncodedPassword
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+        "201":
+          description: Account created successfully
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User_UserDetails'
+        "400":
+          description: There is already a user with this email or username
+        "403":
+          description: Only unregistered users can create a new one
+  /api/plans/new:
+    post:
+      tags:
+      - rest-plan
+      operationId: createPlan
+      parameters:
+      - name: category
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: planName
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: abv
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: description
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: difficulty
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: Not Found
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Plan_PlanDetails'
+  /api/plans/done:
+    post:
+      tags:
+      - rest-plan
+      operationId: completePlan
+      parameters:
+      - name: planName
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Plan_PlanDetails'
+  /api/categories/new:
+    post:
+      tags:
+      - rest-category
+      summary: "Create a category with a specific name, description, color and an\
+        \ optional image"
+      operationId: createCategory
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: des
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: color
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: Returns the created category information
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoryDetails_CategoryDetails'
+        "403":
+          description: Only access to admin account
+        "409":
+          description: There is already a category with the name given by parameter
+  /api/auth/refresh:
+    post:
+      tags:
+      - login-controller
+      operationId: refreshToken
+      parameters:
+      - name: refreshToken
+        in: cookie
+        required: false
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/auth/logout:
+    post:
+      tags:
+      - login-controller
+      operationId: logout
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/auth/login:
+    post:
+      tags:
+      - login-controller
+      operationId: login
+      parameters:
+      - name: accessToken
+        in: cookie
+        required: false
+        schema:
+          type: string
+      - name: refreshToken
+        in: cookie
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/users/profile:
+    get:
+      tags:
+      - rest-user
+      summary: Get user profile by the email
+      operationId: getUser
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: Found the user profile
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User_UserDetails'
+        "403":
+          description: Only access to registered user
+  /api/users/profile/treeHeight:
+    get:
+      tags:
+      - rest-user
+      summary: Show the user progress with the tree height
+      operationId: getHeight
+      responses:
+        "404":
+          description: Not Found
+        "403":
+          description: Only access to registered user
+        "200":
+          description: List of all categories with their height
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/users/profile/finishedPlans:
+    get:
+      tags:
+      - rest-user
+      summary: Show the user progress with the number of finished plans per category
+      operationId: getFinishedPlans
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: List of all categories with their number of finished plans
+          content:
+            '*/*':
+              schema:
+                type: string
+        "403":
+          description: Only access to registered user
+  /api/users/profile/favPlans:
+    get:
+      tags:
+      - rest-user
+      summary: Show the user progress with the number of favourites plans per category
+      operationId: getFavPlans
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: List of all categories with their number of favourite plans
+          content:
+            '*/*':
+              schema:
+                type: string
+        "403":
+          description: Only access to registered user
+  /api/users/completedPlans:
+    get:
+      tags:
+      - rest-user
+      summary: Show completed plans by email
+      operationId: getCompletedTasksByUser
+      parameters:
+      - name: email
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: User not found
+          content: {}
+        "200":
+          description: List of all plans completed by the user
+          content:
+            '*/*':
+              schema:
+                type: string
+        "403":
+          description: Only access to admin account
+  /api/users/completedPlans/:
+    get:
+      tags:
+      - rest-user
+      summary: Show all completed plans by users
+      operationId: getCompletedTasks
+      responses:
+        "404":
+          description: Not Found
+        "403":
+          description: Only access to admin account
+        "200":
+          description: List of all plans completed by all the users
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/plans:
+    get:
+      tags:
+      - rest-plan
+      operationId: getPlan
+      parameters:
+      - name: planName
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Plan_PlanDetails'
+  /api/plans/explore:
+    get:
+      tags:
+      - rest-plan
+      operationId: getPlansPage
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagePlan_PlanDetails'
+  /api/plans/completedPlans:
+    get:
+      tags:
+      - rest-plan
+      operationId: getAllCompletedPlan
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Completed_plan_CompletedPlanDetails'
+  /api/plans/category:
+    get:
+      tags:
+      - rest-plan
+      operationId: getPlansbyCategoryName
+      parameters:
+      - name: category
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plan_PlanDetails'
+  /api/plans/:
+    get:
+      tags:
+      - rest-plan
+      operationId: getPlans
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plan_PlanDetails'
+  /api/categories:
+    get:
+      tags:
+      - rest-category
+      summary: Get the information a specific category searched by its name
+      operationId: categoryInfo
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Doesn't exists a category with that name
+          content: {}
+        "200":
+          description: Returns the category information
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoryDetails_CategoryDetails'
+  /api/categories/:
+    get:
+      tags:
+      - rest-category
+      summary: Get the information of all existing categories
+      operationId: getCategories
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: Returns all the existing categories
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoryDetails_CategoryDetails'
+  /api/plans/completedPlan/removed:
+    delete:
+      tags:
+      - rest-plan
+      operationId: removeCompletedPlanbyUser
+      parameters:
+      - name: email
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: planName
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: date
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Completed_plan_CompletedPlanDetails'
+  /generateRadarChart:
+    get:
+      tags:
+      - rest-charts
+      operationId: getRadarChart_6
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    put:
+      tags:
+      - rest-charts
+      operationId: getRadarChart_3
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    post:
+      tags:
+      - rest-charts
+      operationId: getRadarChart_5
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    delete:
+      tags:
+      - rest-charts
+      operationId: getRadarChart_2
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    options:
+      tags:
+      - rest-charts
+      operationId: getRadarChart_4
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    head:
+      tags:
+      - rest-charts
+      operationId: getRadarChart_1
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    patch:
+      tags:
+      - rest-charts
+      operationId: getRadarChart
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+  /generateDoughnutChart:
+    get:
+      tags:
+      - rest-charts
+      operationId: getDouhnutChart_6
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    put:
+      tags:
+      - rest-charts
+      operationId: getDouhnutChart_3
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    post:
+      tags:
+      - rest-charts
+      operationId: getDouhnutChart_5
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    delete:
+      tags:
+      - rest-charts
+      operationId: getDouhnutChart_2
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    options:
+      tags:
+      - rest-charts
+      operationId: getDouhnutChart_4
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    head:
+      tags:
+      - rest-charts
+      operationId: getDouhnutChart_1
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    patch:
+      tags:
+      - rest-charts
+      operationId: getDouhnutChart
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+  /generateBarChart:
+    get:
+      tags:
+      - rest-charts
+      operationId: getBarChart_6
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    put:
+      tags:
+      - rest-charts
+      operationId: getBarChart_3
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    post:
+      tags:
+      - rest-charts
+      operationId: getBarChart_5
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    delete:
+      tags:
+      - rest-charts
+      operationId: getBarChart_2
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    options:
+      tags:
+      - rest-charts
+      operationId: getBarChart_4
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    head:
+      tags:
+      - rest-charts
+      operationId: getBarChart_1
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+    patch:
+      tags:
+      - rest-charts
+      operationId: getBarChart
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartData'
+components:
+  schemas:
+    Category_UserDetails:
+      type: object
+      properties:
+        userFavoritesCategory:
+          type: array
+          items:
+            $ref: '#/components/schemas/User_UserDetails'
+        description:
+          type: string
+    Tree_UserDetails:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User_UserDetails'
+        category:
+          $ref: '#/components/schemas/Category_UserDetails'
+        last_update:
+          type: integer
+          format: int64
+        date:
+          type: string
+        imagePath:
+          type: string
+    User_UserDetails:
+      type: object
+      properties:
+        trees:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tree_UserDetails'
+        email:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        encodedPassword:
+          type: string
+        confirmEncodedPassword:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        password:
+          type: string
+          writeOnly: true
+    Category_PlanDetails:
+      type: object
+      properties:
+        name:
+          type: string
+        des:
+          type: string
+        color:
+          type: string
+        likedByUser:
+          type: boolean
+        plans:
+          type: array
+          items:
+            $ref: '#/components/schemas/Plan_PlanDetails'
+        userFavoritesCategory:
+          type: array
+          items:
+            $ref: '#/components/schemas/User_PlanDetails'
+        description:
+          type: string
+    Plan_PlanDetails:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        difficulty:
+          type: integer
+          format: int32
+        likedUser:
+          type: boolean
+        category:
+          $ref: '#/components/schemas/Category_PlanDetails'
+    Tree_PlanDetails:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User_PlanDetails'
+        category:
+          $ref: '#/components/schemas/Category_PlanDetails'
+        last_update:
+          type: integer
+          format: int64
+        date:
+          type: string
+        imagePath:
+          type: string
+    User_PlanDetails:
+      type: object
+      properties:
+        trees:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tree_PlanDetails'
+        encodedPassword:
+          type: string
+        confirmEncodedPassword:
+          type: string
+        password:
+          type: string
+          writeOnly: true
+    Category_CategoryDetails:
+      type: object
+      properties:
+        name:
+          type: string
+        des:
+          type: string
+        color:
+          type: string
+        likedByUser:
+          type: boolean
+        plans:
+          type: array
+          items:
+            $ref: '#/components/schemas/Plan_CategoryDetails'
+        userFavoritesCategory:
+          type: array
+          items:
+            $ref: '#/components/schemas/User_CategoryDetails'
+        description:
+          type: string
+    Plan_CategoryDetails:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        difficulty:
+          type: integer
+          format: int32
+        likedUser:
+          type: boolean
+    TreePK_CategoryDetails:
+      type: object
+      properties:
+        userPK:
+          type: string
+        categoryPK:
+          type: string
+    Tree_CategoryDetails:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User_CategoryDetails'
+        category:
+          $ref: '#/components/schemas/Category_CategoryDetails'
+        treePK:
+          $ref: '#/components/schemas/TreePK_CategoryDetails'
+        height:
+          type: integer
+          format: int32
+        last_update:
+          type: integer
+          format: int64
+        date:
+          type: string
+        imagePath:
+          type: string
+    User_CategoryDetails:
+      type: object
+      properties:
+        trees:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tree_CategoryDetails'
+        encodedPassword:
+          type: string
+        confirmEncodedPassword:
+          type: string
+        password:
+          type: string
+          writeOnly: true
+    CategoryDetails_CategoryDetails:
+      type: object
+    AuthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - SUCCESS
+          - FAILURE
+        message:
+          type: string
+        error:
+          type: string
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    PagePlan_PlanDetails:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Plan_PlanDetails'
+        sort:
+          $ref: '#/components/schemas/Sort_PlanDetails'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: '#/components/schemas/Pageable_PlanDetails'
+        empty:
+          type: boolean
+    Pageable_PlanDetails:
+      type: object
+      properties:
+        offset:
+          type: integer
+          format: int64
+        sort:
+          $ref: '#/components/schemas/Sort_PlanDetails'
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        unpaged:
+          type: boolean
+        paged:
+          type: boolean
+    Sort_PlanDetails:
+      type: object
+      properties:
+        sorted:
+          type: boolean
+        unsorted:
+          type: boolean
+        empty:
+          type: boolean
+    Category_CompletedPlanDetails:
+      type: object
+      properties:
+        userFavoritesCategory:
+          type: array
+          items:
+            $ref: '#/components/schemas/User_CompletedPlanDetails'
+        description:
+          type: string
+    Completed_plan_CompletedPlanDetails:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User_CompletedPlanDetails'
+        email:
+          type: string
+        planName:
+          type: string
+    Tree_CompletedPlanDetails:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User_CompletedPlanDetails'
+        category:
+          $ref: '#/components/schemas/Category_CompletedPlanDetails'
+        last_update:
+          type: integer
+          format: int64
+        date:
+          type: string
+        imagePath:
+          type: string
+    User_CompletedPlanDetails:
+      type: object
+      properties:
+        trees:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tree_CompletedPlanDetails'
+        email:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        encodedPassword:
+          type: string
+        confirmEncodedPassword:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        password:
+          type: string
+          writeOnly: true
+    ChartData:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        color:
+          type: string
+        data:
+          type: integer
+          format: int32
