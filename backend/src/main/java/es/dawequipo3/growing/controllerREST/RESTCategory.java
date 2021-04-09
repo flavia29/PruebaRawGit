@@ -40,9 +40,7 @@ public class RESTCategory {
     @Autowired
     private UserService userService;
 
-    interface CategoryDetails extends Category.Trees, Category.Basic, Tree.Basic, Plan.Basic{}
-
-
+    interface CategoryDetails extends Category.Trees, Category.Basic, Category.Plans, Tree.Basic, Plan.Basic{}
 
 
     @Operation(summary = "Get the information of all existing categories")
@@ -52,11 +50,12 @@ public class RESTCategory {
                     responseCode = "200",
                     description = "Returns all the existing categories",
                     content = {@Content(
+                            mediaType = "application/json",
                             schema = @Schema(implementation = CategoryDetails.class)
                     )}
             ),
     })
-    @JsonView(CategoryDetails.class)
+    @JsonView(Category.Basic.class)
     @GetMapping("/")
     public ResponseEntity<Collection<Category>> getCategories() {
         return ResponseEntity.ok(categoryService.findAll());
@@ -103,6 +102,7 @@ public class RESTCategory {
                     responseCode = "200",
                     description = "Returns the created category information",
                     content = {@Content(
+                            mediaType = "application/json",
                             schema = @Schema(implementation = CategoryDetails.class)
                     )}
             ),
@@ -142,6 +142,7 @@ public class RESTCategory {
                     responseCode = "200",
                     description = "Returns the created category information",
                     content = {@Content(
+                            mediaType = "application/json",
                             schema = @Schema(implementation = CategoryDetails.class)
                     )}
             ),
